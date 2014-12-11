@@ -1,42 +1,31 @@
 #! /bin/bash
 
+# do not execute with sudo
 
-echo "Enter scala version or hit enter for 1.9.0.1"
+echo "Enter scala version or hit enter for 2.10.4"
 read version
 if [ "$version" == "" ] 
 then
-  version="2.9.0.1"
+  version="2.10.4"
 fi
 dl="scala-$version.tgz"
-url="http://www.scala-lang.org/downloads/distrib/files/$dl"
+url="http://www.scala-lang.org/files/archive/$dl"
 
 echo "Setting up scala $version from $url"
-sudo mkdir /opt/scala
-cd /opt/scala
-sudo wget "$url"
+#sudo mkdir /opt/scala
+#cd /opt/scala
+wget "$url"
 sudo tar xzf "$dl"
 sudo rm "$dl"
-sudo ln -s "/opt/scala/scala-$version" /opt/scala/latest
+#sudo ln -s "/opt/scala/scala-$version" /opt/scala/latest
+sudo cp -r "scala-$version" /var/lib/jvm/
 
+sudo update-alternatives --install /usr/bin/scala scala "/usr/lib/jvm/scala-$version/bin/scala" 1
 
-sudo update-alternatives --install /usr/bin/scala scala "/opt/scala/latest/bin/scala" 1
-sudo update-alternatives --install /usr/bin/scala scala "/opt/scala/scala-$version/bin/scala" 2
+sudo update-alternatives --install /usr/bin/scalac scalac "/usr/lib/jvm/scala-$version/bin/scalac" 1
 
-sudo update-alternatives --install /usr/bin/scalac scalac "/opt/scala/latest/bin/scalac" 1
-sudo update-alternatives --install /usr/bin/scalac scalac "/opt/scala/scala-$version/bin/scalac" 2
+sudo update-alternatives --install /usr/bin/fsc fsc "/usr/lib/jvm/scala-$version/bin/fsc" 1
 
-sudo update-alternatives --install /usr/bin/fsc fsc "/opt/scala/latest/bin/fsc" 1
-sudo update-alternatives --install /usr/bin/fsc fsc "/opt/scala/scala-$version/bin/fsc" 2
+sudo update-alternatives --install /usr/bin/scalap scalap "/usr/lib/jvm/scala-$version/bin/scalap" 1
 
-sudo update-alternatives --install /usr/bin/sbaz sbaz "/opt/scala/latest/bin/sbaz" 1
-sudo update-alternatives --install /usr/bin/sbaz sbaz "/opt/scala/scala-$version/bin/sbaz" 2
-
-sudo update-alternatives --install /usr/bin/sbaz-setup sbaz-setup "/opt/scala/latest/bin/sbaz-setup" 1
-sudo update-alternatives --install /usr/bin/sbaz-setup sbaz-setup "/opt/scala/scala-$version/bin/sbaz-setup" 2
-
-sudo update-alternatives --install /usr/bin/scalap scalap "/opt/scala/latest/bin/scalap" 1
-sudo update-alternatives --install /usr/bin/scalap scalap "/opt/scala/scala-$version/bin/scalap" 2
-
-sudo update-alternatives --install /usr/bin/scaladoc scaladoc "/opt/scala/latest/bin/scaladoc" 1
-sudo update-alternatives --install /usr/bin/scaladoc scaladoc "/opt/scala/scala-$version/bin/scaladoc" 2
-
+sudo update-alternatives --install /usr/bin/scaladoc scaladoc "/usr/lib/jvm/scala-$version/bin/scaladoc" 1
